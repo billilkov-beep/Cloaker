@@ -1,0 +1,19 @@
+---
+description: Core privacy and security rules for the private communications app
+alwaysApply: true
+---
+
+# Core privacy rules
+
+- The server must never receive plaintext app-to-app message bodies.
+- App-to-app messages are encrypted on the sending device and decrypted only on recipient devices.
+- Backend storage for messages must contain ciphertext/encrypted envelope fields only.
+- Do not create server fields named `body`, `plaintext`, `message_text`, `cleartext`, or similar for app-to-app messages.
+- Push notifications must be generic and must not include message contents.
+- Do not log message contents, decrypted attachments, private keys, auth secrets, Twilio credentials, or recovery secrets.
+- Do not build public search or autocomplete for users.
+- Discovery must be exact-token-only, off by default, and max 5 minutes.
+- Secure sessions end when either participant disconnects, and both devices receive purge commands.
+- Screenshot/screen recording events are control events and must never include message bodies.
+- Twilio is server-side only.
+- Do not invent crypto. Use approved libraries and keep placeholders out of production builds.

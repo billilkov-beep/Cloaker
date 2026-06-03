@@ -1,0 +1,18 @@
+---
+description: Reuse existing GitHub libraries before writing new code
+alwaysApply: true
+---
+
+# Reuse-first instruction
+
+Before implementing any major module, inspect `docs/07_GITHUB_REUSE_RESEARCH.md`.
+
+For each dependency:
+
+1. Verify current repository activity.
+2. Verify package manager availability.
+3. Verify license compatibility.
+4. Verify security/advisory status.
+5. Prefer official SDKs for Twilio/Apple/Android/platform functionality.
+6. Never copy code from AGPL/GPL repositories into a closed-source app without legal approval.
+7. For crypto, prefer proven audited libraries/protocols and require specialist review before production.

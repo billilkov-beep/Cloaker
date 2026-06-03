@@ -1,0 +1,287 @@
+// Prisma schema draft for Privacy-First Secure Communications App
+// No plaintext message body fields are allowed for app-to-app encrypted messages.
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+//
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+enum UserStatus {
+  ACTIVE
+  LOCKED
+  DELETED
+}
+
+enum DeviceStatus {
+  ACTIVE
+  REVOKED
+  LOST
+}
+
+enum DiscoveryStatus {
+  ACTIVE
+  USED
+  EXPIRED
+  CANCELLED
+}
+
+enum ContactRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+  CANCELLED
+}
+
+enum ContactStatus {
+  ACTIVE
+  BLOCKED
+  REVOKED
+}
+
+enum DiscussionStatus {
+  ACTIVE
+  BLOCKED
+  CLOSED
+}
+
+enum SecureSessionStatus {
+  ACTIVE
+  ENDING
+  ENDED
+  PURGED
+}
+
+enum MessageStatus {
+  PENDING
+  DELIVERED
+  READ
+  DELETED
+  EXPIRED
+}
+
+enum ControlEventType {
+  SCREENSHOT_TAKEN
+  SCREEN_RECORDING_STARTED
+  SCREEN_RECORDING_STOPPED
+  SESSION_END_REQUESTED
+  PURGE_SESSION
+  KEY_CHANGED
+  DEVICE_REVOKED
+}
+
+model User {
+  id                 String     @id @default(cuid())
+  displayName        String
+  status             UserStatus @default(ACTIVE)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  devices            UserDevice[]
+}
+
+model UserDevice {
+  id                       String       @id @default(cuid())
+  userId                   String
+  user                     User         @relation(fields: [userId], references: [id])
+  deviceLabel              String?
+  platform                 String
+  status                   DeviceStatus @default(ACTIVE)
+  identityPublicKey        String
+  signedPrekeyPublic       String?
+  signedPrekeySignature    String?
+  registrationId           String?
+  lastSeenAt               DateTime?
+  createdAt                DateTime     @default(now())
+  revokedAt                DateTime?
+  oneTimePrekeys           OneTimePrekey[]
+
+  @@index([userId, status])
+}
+
+model OneTimePrekey {
+  id            String     @id @default(cuid())
+  userDeviceId  String
+  userDevice    UserDevice @relation(fields: [userDeviceId], references: [id])
+  prekeyId      String
+  publicKey     String
+  status        String     @default("AVAILABLE") // AVAILABLE, CLAIMED, EXPIRED
+  createdAt     DateTime   @default(now())
+  claimedAt     DateTime?
+
+  @@unique([userDeviceId, prekeyId])
+  @@index([userDeviceId, status])
+}
+
+model DiscoveryWindow {
+  id              String          @id @default(cuid())
+  ownerUserId     String
+  ownerDeviceId   String
+  tokenHash       String          @unique
+  status          DiscoveryStatus @default(ACTIVE)
+  maxUses         Int             @default(1)
+  useCount        Int             @default(0)
+  createdAt       DateTime        @default(now())
+  expiresAt       DateTime
+  usedAt          DateTime?
+  cancelledAt     DateTime?
+
+  @@index([ownerUserId, status, expiresAt])
+  @@index([status, expiresAt])
+}
+
+model ContactRequest {
+  id                    String               @id @default(cuid())
+  discoveryWindowId      String
+  requesterUserId        String
+  requesterDeviceId      String
+  targetUserId           String
+  status                 ContactRequestStatus @default(PENDING)
+  createdAt              DateTime             @default(now())
+  expiresAt              DateTime
+  respondedAt            DateTime?
+
+  @@index([targetUserId, status])
+  @@index([requesterUserId, status])
+}
+
+model ContactPair {
+  id             String        @id @default(cuid())
+  userAId        String
+  userBId        String
+  pairwiseIdForA String        @unique
+  pairwiseIdForB String        @unique
+  status         ContactStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  blockedAt      DateTime?
+  revokedAt      DateTime?
+
+  @@unique([userAId, userBId])
+  @@index([userAId, status])
+  @@index([userBId, status])
+}
+
+model Discussion {
+  id          String            @id @default(cuid())
+  contactId   String
+  status      DiscussionStatus  @default(ACTIVE)
+  createdAt   DateTime          @default(now())
+  closedAt    DateTime?
+  participants DiscussionParticipant[]
+  sessions    SecureSession[]
+}
+
+model DiscussionParticipant {
+  id             String     @id @default(cuid())
+  discussionId   String
+  discussion     Discussion @relation(fields: [discussionId], references: [id])
+  userId         String
+  status         String     @default("ACTIVE") // ACTIVE, BLOCKED, REMOVED
+  createdAt      DateTime   @default(now())
+
+  @@unique([discussionId, userId])
+  @@index([userId, status])
+}
+
+model SecureSession {
+  id                         String              @id @default(cuid())
+  discussionId                String
+  discussion                  Discussion          @relation(fields: [discussionId], references: [id])
+  epoch                       Int                 @default(1)
+  status                      SecureSessionStatus @default(ACTIVE)
+  userAId                     String
+  userBId                     String
+  userALastHeartbeatAt        DateTime?
+  userBLastHeartbeatAt        DateTime?
+  createdAt                   DateTime            @default(now())
+  endedAt                     DateTime?
+  endReason                   String?
+  purgedAt                    DateTime?
+  messages                    EncryptedMessage[]
+  controlEvents               SecureControlEvent[]
+
+  @@index([discussionId, status])
+  @@index([userAId, status])
+  @@index([userBId, status])
+}
+
+model EncryptedMessage {
+  id                    String        @id @default(cuid())
+  discussionId           String
+  secureSessionId        String
+  secureSession          SecureSession @relation(fields: [secureSessionId], references: [id])
+  senderUserId           String
+  recipientUserId        String
+  senderDeviceId         String
+  recipientDeviceId      String?
+  clientMessageId        String
+  encryptedEnvelopeJson  Json
+  ciphertextHash         String?
+  status                 MessageStatus @default(PENDING)
+  createdAt              DateTime      @default(now())
+  expiresAt              DateTime
+  deliveredAt            DateTime?
+  readAt                 DateTime?
+  deletedAt              DateTime?
+
+  @@unique([senderDeviceId, clientMessageId])
+  @@index([secureSessionId, status, expiresAt])
+  @@index([recipientUserId, status])
+}
+
+model SecureControlEvent {
+  id                    String           @id @default(cuid())
+  discussionId           String
+  secureSessionId        String
+  secureSession          SecureSession    @relation(fields: [secureSessionId], references: [id])
+  actorUserId            String
+  actorDeviceId          String
+  eventType              ControlEventType
+  encryptedPayloadJson   Json?
+  metadataJson           Json?
+  signature              String?
+  createdAt              DateTime         @default(now())
+
+  @@index([secureSessionId, eventType])
+  @@index([discussionId, createdAt])
+}
+
+model PurgeReceipt {
+  id              String   @id @default(cuid())
+  secureSessionId String
+  userId          String
+  deviceId        String
+  signedReceipt   String?
+  purgedAt        DateTime @default(now())
+
+  @@unique([secureSessionId, deviceId])
+}
+
+model AuditEvent {
+  id             String   @id @default(cuid())
+  eventType      String
+  actorUserId    String?
+  actorDeviceId  String?
+  targetUserId   String?
+  discussionId   String?
+  secureSessionId String?
+  metadataJson   Json?
+  createdAt      DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([actorUserId, createdAt])
+}
+
+// Optional future Twilio voice/SMS fallback. Do not use for app-to-app encrypted messages.
+model TwilioNumber {
+  id            String   @id @default(cuid())
+  phoneE164     String   @unique
+  voiceEnabled  Boolean  @default(false)
+  smsEnabled    Boolean  @default(false)
+  status        String   @default("AVAILABLE")
+  lastUsedAt    DateTime?
+  cooldownUntil DateTime?
+}

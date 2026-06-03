@@ -1,0 +1,14 @@
+---
+description: Testing, logging, and privacy guardrails
+alwaysApply: true
+---
+
+# Testing and logging rules
+
+- Add unit tests for authorization boundaries.
+- Add integration tests for discovery expiry, wrong tokens, and generic errors.
+- Add tests that server message schemas do not include plaintext fields.
+- Add tests for delete-on-disconnect and purge receipts.
+- Add tests for screenshot/screen-recording control events.
+- Logs must use structured metadata only. Never log message content, keys, tokens, or phone numbers unless explicitly redacted.
+- Crash/analytics SDKs must be configured to block message content and private metadata before beta.

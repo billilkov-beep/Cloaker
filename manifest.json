@@ -1,0 +1,19 @@
+{
+  "package_name": "privacy_app_employee_handoff",
+  "primary_start_file": "START_HERE_EMPLOYEE.md",
+  "contains_stage1_cursor_pack": true,
+  "stage1_pack_folder": "stage1_cursor_pack/",
+  "prompts": [
+    "prompts/CURSOR_MASTER_PROMPT.md",
+    "prompts/CURSOR_REPO_RESEARCH_PROMPT.md",
+    "prompts/CURSOR_FIRST_BUILD_PROMPT.md"
+  ],
+  "non_negotiables": [
+    "server cannot read app-to-app messages",
+    "no app-to-app SMS",
+    "private 5-minute discovery only",
+    "delete on disconnect",
+    "no public user search",
+    "reuse GitHub repos before rebuilding"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Privacy App Stage 1 Cursor Pack",
+  "generated_at": "2026-06-02",
+  "purpose": "Planning and build instructions for a private E2EE mobile communications app",
+  "entrypoints": [
+    "00_CURSOR_START_HERE.md",
+    "99_CURSOR_BUILD_PROMPT.md",
+    "STAGE1_MASTER_CURSOR_IMPORT.md"
+  ],
+  "non_negotiables": [
+    "No plaintext app-to-app messages on server",
+    "No public user search",
+    "Discovery off by default and max 5 minutes",
+    "Exact token/QR discovery only",
+    "Delete on disconnect",
+    "Screenshot/capture control events notify both users",
+    "Twilio server-side only",
+    "Origin server IP private behind tunnel/private origin",
+    "No custom cryptography"
+  ]
+}
