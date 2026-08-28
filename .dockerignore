@@ -1,0 +1,12 @@
+.git
+.github
+node_modules
+.next
+.env
+.env.*
+*.log
+data
+.runtime
+.source-test
+docs
+tools
