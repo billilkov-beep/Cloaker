@@ -16,7 +16,9 @@ function copy(src, dest){
 }
 copy(path.join(root, 'public'), path.join(out, 'public'));
 copy(path.join(root, 'sql'), path.join(out, 'sql'));
-copy(path.join(root, 'data'), path.join(out, 'data'));
+if (fs.existsSync(path.join(root, 'data'))) {
+  copy(path.join(root, 'data'), path.join(out, 'data'));
+}
 fs.copyFileSync(path.join(root, 'server.js'), path.join(out, 'server.js'));
 fs.copyFileSync(path.join(root, 'package.json'), path.join(out, 'package.json'));
 fs.writeFileSync(path.join(out, 'BUILD_OK.txt'), 'Cloakr V10.2 full real app build complete. Use server.js from root, or .next/server.js only if Hostinger entry is pointed there.\n');
