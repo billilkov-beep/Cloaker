@@ -1,0 +1,15 @@
+{
+  "name": "cloakr-v10-2-real-live-chat-public-release",
+  "version": "10.2.0",
+  "private": true,
+  "description": "Cloakr V10.2 full public release - light Messenger style secure chat, Supabase REST, SSE plus polling live messages.",
+  "main": "server.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "node server.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}

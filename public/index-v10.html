@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Cloakr V10.2 — Light Secure Messenger</title>
+  <link rel="stylesheet" href="/cloakr-v10.css?v=10200" />
+</head>
+<body class="login-page">
+  <div class="release-watermark">V10.2 NEW UI</div>
+  <main class="login-shell">
+    <nav class="top-nav">
+      <a class="logo" href="/"><span class="logo-icon">C</span><span>Cloakr</span><small>Light Messenger</small></a>
+      <a class="nav-pill" href="/api/health" target="_blank" rel="noreferrer">Health check</a>
+    </nav>
+
+    <section class="login-grid">
+      <div class="login-copy">
+        <p class="eyebrow">Full real app public release</p>
+        <h1>Login, start secure connection, chat opens in a new tab.</h1>
+        <p class="lead">A clean Messenger/WhatsApp style interface with live receiving, typing animation, read ticks, voice notes, photo, video and document sending.</p>
+        <div class="hero-badges">
+          <span>SSE live</span><span>Polling backup</span><span>New tab session</span><span>Media upload</span>
+        </div>
+        <div class="phone-preview" aria-hidden="true">
+          <div class="phone-head"><span></span><b>Paul Private</b><em>online</em></div>
+          <div class="bubble in">Hey John, live chat is connected.</div>
+          <div class="bubble out">Perfect — this is the new V10.2 UI.</div>
+          <div class="typing-preview"><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <form class="login-card" id="loginForm" autocomplete="on">
+        <div class="lock-orb">🔐</div>
+        <h2>Sign in</h2>
+        <p>Use the seeded demo users after running the Supabase SQL.</p>
+        <label for="email">Email address</label>
+        <input id="email" type="email" value="john@securesession.test" autocomplete="email" required />
+        <label for="password">Password</label>
+        <input id="password" type="password" value="John@123456" autocomplete="current-password" required />
+        <button class="btn primary full" type="submit">Login</button>
+        <p id="loginMsg" class="form-message"></p>
+        <div class="demo-row">
+          <button type="button" id="demoJohn">John demo</button>
+          <button type="button" id="demoPaul">Paul demo</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="connectionModal" aria-hidden="true">
+    <section class="connect-modal" role="dialog" aria-modal="true" aria-labelledby="connectTitle">
+      <button class="modal-close" id="closeConnect" type="button">×</button>
+      <div class="modal-icon">✓</div>
+      <p class="eyebrow">Login successful</p>
+      <h2 id="connectTitle">Start secure connection</h2>
+      <p class="modal-text">Choose a contact. Cloakr will automatically open the full-screen live chat in a new tab.</p>
+      <div id="connectContacts" class="connect-list"><span>Loading contacts…</span></div>
+      <div class="modal-actions">
+        <button class="btn light" type="button" id="openDashboard">Open dashboard</button>
+        <button class="btn primary" type="button" id="startFirstConnection">Start secure connection</button>
+      </div>
+      <p id="connectMsg" class="form-message"></p>
+    </section>
+  </div>
+
+  <script src="/auth-v10.js?v=10200"></script>
+</body>
+</html>

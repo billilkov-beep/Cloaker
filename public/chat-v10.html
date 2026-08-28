@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Cloakr V10.2 Live Chat</title>
+  <link rel="stylesheet" href="/cloakr-v10.css?v=10200" />
+</head>
+<body class="chat-page">
+  <div class="messenger-app">
+    <aside id="sidebar" class="sidebar">
+      <div class="side-brand"><span class="logo-icon">C</span><div><b>Cloakr</b><small>V10.2 live messenger</small></div><button id="closeSidebar" class="side-close" title="Hide sidebar">×</button></div>
+      <div class="side-search">Search conversations</div>
+      <div class="thread-card active"><div class="avatar" id="sideAvatar">C</div><div><b id="threadName">Secure contact</b><span id="threadPreview">Opening live session…</span></div></div>
+      <div class="side-tip"><b>Two-user test</b><span>Use John in one browser and Paul in incognito/another browser. The chat tab keeps its own token.</span></div>
+    </aside>
+
+    <main class="chat-panel">
+      <header class="chat-header">
+        <div class="chat-person">
+          <button id="sidebarToggle" class="sidebar-toggle" title="Show / hide sidebar">☰</button>
+          <button id="backBtn" class="mobile-back" title="Dashboard">‹</button>
+          <div class="avatar large" id="peerAvatar">C</div>
+          <div><h1 id="chatTitle">Secure chat</h1><p id="chatSub">Connecting live feed…</p></div>
+        </div>
+        <div class="chat-actions">
+          <span id="liveBadge" class="status-pill warning">Connecting</span>
+          <button id="dashboardBtn" class="btn light small desktop-only">Dashboard</button>
+        </div>
+      </header>
+
+      <section id="messageList" class="message-list" aria-live="polite"></section>
+
+      <div id="typingLine" class="typing-line hidden">
+        <div class="typing-dots"><span></span><span></span><span></span></div><b id="typingName">Typing…</b>
+      </div>
+
+      <footer class="composer">
+        <input id="fileInput" type="file" hidden />
+        <button id="attachBtn" class="tool-btn" title="Document">＋</button>
+        <button id="imageBtn" class="tool-btn" title="Photo">🖼</button>
+        <button id="videoBtn" class="tool-btn" title="Video">🎬</button>
+        <input id="messageInput" placeholder="Type private message…" autocomplete="off" />
+        <button id="voiceBtn" class="voice-btn" title="Voice note">🎙</button>
+        <button id="sendBtn" class="send-btn" title="Send">➤</button>
+      </footer>
+
+      <div id="recordingBar" class="recording-bar hidden">
+        <span class="pulse-dot"></span>
+        <div><b>Recording voice note</b><small id="recordTimer">00:00</small></div>
+        <button id="cancelRecord">Cancel</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="/chat-v10.js?v=10200"></script>
+</body>
+</html>

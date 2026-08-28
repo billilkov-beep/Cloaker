@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Cloakr V10.2 Dashboard</title>
+  <link rel="stylesheet" href="/cloakr-v10.css?v=10200" />
+</head>
+<body class="dashboard-page">
+  <div class="release-watermark">V10.2 NEW UI</div>
+  <header class="dash-nav">
+    <a class="logo" href="/dashboard"><span class="logo-icon">C</span><span>Cloakr</span><small>Dashboard</small></a>
+    <div class="nav-actions">
+      <span id="dbBadge" class="status-pill neutral">Checking storage…</span>
+      <button id="logoutBtn" class="btn light small">Logout</button>
+    </div>
+  </header>
+
+  <main class="dash-wrap">
+    <section class="welcome-panel">
+      <div>
+        <p class="eyebrow">V10.2 light public release</p>
+        <h1 id="welcomeTitle">Welcome</h1>
+        <p>Press Start Secure Connection. After success, the Messenger-style chat opens automatically in a new tab.</p>
+      </div>
+      <button id="openConnectModal" class="btn primary big">Start secure connection</button>
+    </section>
+
+    <section class="white-panel">
+      <div class="panel-title-row">
+        <div><p class="eyebrow">Contacts</p><h2>Secure users</h2></div>
+        <button id="refreshBtn" class="btn light">Refresh</button>
+      </div>
+      <div id="contactsGrid" class="contacts-grid"></div>
+    </section>
+
+    <section class="feature-grid">
+      <article><b>New tab chat</b><span>Correct token is copied into the chat tab with sessionStorage.</span></article>
+      <article><b>Live receive</b><span>SSE feed plus 800ms polling makes both users sync.</span></article>
+      <article><b>Media composer</b><span>Send voice, image, video and documents.</span></article>
+      <article><b>Clean mobile UI</b><span>Full-screen WhatsApp/Messenger style layout.</span></article>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="connectionModal" aria-hidden="true">
+    <section class="connect-modal" role="dialog" aria-modal="true" aria-labelledby="dashConnectTitle">
+      <button class="modal-close" id="closeConnect" type="button">×</button>
+      <div class="modal-icon">↗</div>
+      <p class="eyebrow">Secure connection</p>
+      <h2 id="dashConnectTitle">Start secure connection</h2>
+      <p class="modal-text">Select a contact and the live chat will open in a separate tab.</p>
+      <div id="connectContacts" class="connect-list"><span>Loading contacts…</span></div>
+      <div class="modal-actions">
+        <button class="btn light" type="button" id="cancelConnect">Cancel</button>
+        <button class="btn primary" type="button" id="startFirstConnection">Start secure connection</button>
+      </div>
+      <p id="connectMsg" class="form-message"></p>
+    </section>
+  </div>
+
+  <script src="/dashboard-v10.js?v=10200"></script>
+</body>
+</html>
